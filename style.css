@@ -43,10 +43,20 @@ button:active {
 }
 
 #app {
-  width: 320px;
-  height: 520px;
   position: relative;
+border-radius: 12px;
+overflow: hidden;
 }
+#app.basic {
+  width: 320px;
+  height:520px;
+}
+#app.scientific {
+  width: 920px;
+  height:520px;
+}
+
+
 
 .calculator {
   width: 100%;
@@ -61,8 +71,12 @@ button:active {
           flex-direction: column;
 }
 
+.calculator-shadow {
+  box-shadow: 50px 20px 20px 50px #f00;
+}
+
 #wrapper .calculator {
-  box-shadow: 0px 0px 20px 0px #aaa;
+  /* box-shadow: 0px 0px 20px 0px #aaa; */
 }
 
 .calculator-display {

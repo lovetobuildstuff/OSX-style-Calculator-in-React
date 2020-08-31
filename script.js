@@ -50,14 +50,12 @@ class CalculatorDisplay extends React.Component {
     // Add back missing .0 in e.g. 12.0
     const match = value.match(/\.\d*?(0*)$/);
 
-    if (match)
-    formattedValue += /[1-9]/.test(match[0]) ? match[1] : match[0];
-
+    if (match) {
+    	formattedValue += /[1-9]/.test(match[0]) ? match[1] : match[0];
+	}
     return (
       React.createElement("div", _extends({}, props, { className: "calculator-display" }),
       React.createElement(AutoScalingText, null, formattedValue)));
-
-
   }}
 
 
@@ -91,8 +89,9 @@ class Calculator extends React.Component {constructor(...args) {super(...args);_
     event => {
       let { key } = event;
 
-      if (key === 'Enter')
-      key = '=';
+      if (key === 'Enter') {
+        key = '=';
+	  }
 
       if (/\d/.test(key)) {
         event.preventDefault();
@@ -118,7 +117,52 @@ class Calculator extends React.Component {constructor(...args) {super(...args);_
           this.clearAll();
         }
       }
-    });}clearAll() {this.setState({ value: null, displayValue: '0', operator: null, waitingForOperand: false });}clearDisplay() {this.setState({ displayValue: '0' });}clearLastChar() {const { displayValue } = this.state;this.setState({ displayValue: displayValue.substring(0, displayValue.length - 1) || '0' });}toggleSign() {const { displayValue } = this.state;const newValue = parseFloat(displayValue) * -1;this.setState({ displayValue: String(newValue) });}inputPercent() {const { displayValue } = this.state;const currentValue = parseFloat(displayValue);if (currentValue === 0) return;const fixedDigits = displayValue.replace(/^-?\d*\.?/, '');const newValue = parseFloat(displayValue) / 100;this.setState({ displayValue: String(newValue.toFixed(fixedDigits.length + 2)) });}inputDot() {const { displayValue } = this.state;if (!/\./.test(displayValue)) {this.setState({ displayValue: displayValue + '.', waitingForOperand: false });}}inputDigit(digit) {const { displayValue, waitingForOperand } = this.state;if (waitingForOperand) {this.setState({ displayValue: String(digit), waitingForOperand: false });} else {this.setState({ displayValue: displayValue === '0' ? String(digit) : displayValue + digit });}}performOperation(nextOperator) {const { value, displayValue, operator } = this.state;const inputValue = parseFloat(displayValue);if (value == null) {this.setState({ value: inputValue });} else if (operator) {const currentValue = value || 0;const newValue = CalculatorOperations[operator](currentValue, inputValue);this.setState({ value: newValue, displayValue: String(newValue) });}this.setState({ waitingForOperand: true, operator: nextOperator });}
+    });}
+clearAll() {
+	this.setState({ value: null, displayValue: '0', operator: null, waitingForOperand: false });
+}
+clearDisplay() {
+	this.setState({ displayValue: '0' });
+}
+clearLastChar() {
+	const { displayValue } = this.state;this.setState({ displayValue: displayValue.substring(0, displayValue.length - 1) || '0' });
+}
+toggleSign() {
+	const { displayValue } = this.state;
+	const newValue = parseFloat(displayValue) * -1;this.setState({ displayValue: String(newValue) });
+}
+inputPercent() {
+	const { displayValue } = this.state;
+	const currentValue = parseFloat(displayValue);if (currentValue === 0) return;
+	const fixedDigits = displayValue.replace(/^-?\d*\.?/, '');
+	const newValue = parseFloat(displayValue) / 100;this.setState({ displayValue: String(newValue.toFixed(fixedDigits.length + 2)) });
+}
+inputDot() {
+	const { displayValue } = this.state;
+	if (!/\./.test(displayValue)) {
+		this.setState({ displayValue: displayValue + '.', waitingForOperand: false });
+	}
+}
+inputDigit(digit) {
+	const { displayValue, waitingForOperand } = this.state;
+	if (waitingForOperand) {
+		this.setState({ displayValue: String(digit), waitingForOperand: false });
+	} else {
+		this.setState({ displayValue: displayValue === '0' ? String(digit) : displayValue + digit });
+	}
+}
+performOperation(nextOperator) {
+	const { value, displayValue, operator } = this.state;
+	const inputValue = parseFloat(displayValue);
+	if (value == null) {
+		this.setState({ value: inputValue });
+	} else if (operator) {
+		const currentValue = value || 0;
+		const newValue = CalculatorOperations[operator](currentValue, inputValue);
+		this.setState({ value: newValue, displayValue: String(newValue) });
+	}
+	this.setState({ waitingForOperand: true, operator: nextOperator });
+}
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -133,7 +177,9 @@ class Calculator extends React.Component {constructor(...args) {super(...args);_
 
     const clearDisplay = displayValue !== '0';
     const clearText = clearDisplay ? 'C' : 'AC';
-
+/* 
+      React.createElement("div", { className: "calculator-shadow" },
+ */
     return (
       React.createElement("div", { className: "calculator" },
       React.createElement(CalculatorDisplay, { value: displayValue }),
@@ -157,7 +203,6 @@ class Calculator extends React.Component {constructor(...args) {super(...args);_
       React.createElement(CalculatorKey, { className: "key-8", onPress: () => this.inputDigit(8) }, "8"),
       React.createElement(CalculatorKey, { className: "key-9", onPress: () => this.inputDigit(9) }, "9"))),
 
-
       React.createElement("div", { className: "operator-keys" },
       React.createElement(CalculatorKey, { className: "key-divide", onPress: () => this.performOperation('/') }, "\xF7"),
       React.createElement(CalculatorKey, { className: "key-multiply", onPress: () => this.performOperation('*') }, "\xD7"),
@@ -166,7 +211,6 @@ class Calculator extends React.Component {constructor(...args) {super(...args);_
       React.createElement(CalculatorKey, { className: "key-equals", onPress: () => this.performOperation('=') }, "=")))));
 
   }}
-
 
 ReactDOM.render(
 React.createElement(Calculator, null),
