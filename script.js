@@ -1,20 +1,17 @@
 function _extends() {_extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};return _extends.apply(this, arguments);}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}const PointTarget = ReactPoint.PointTarget;
 
-class AutoScalingText extends React.Component {constructor(...args) {
-	super(...args);
-	_defineProperty(this, "state", { scale: 1 });
+class AutoScalingText extends React.Component {
+	constructor(...args) {
+		super(...args);
+		_defineProperty(this, "state", { scale: 1 });
 	}
-
   componentDidUpdate() {
     const { scale } = this.state;
-
     const node = this.node;
     const parentNode = node.parentNode;
-
     const availableWidth = parentNode.offsetWidth;
     const actualWidth = node.offsetWidth;
     const actualScale = availableWidth / actualWidth;
-
     if (scale === actualScale) {
         return;
 	}
@@ -26,16 +23,14 @@ class AutoScalingText extends React.Component {constructor(...args) {
   }
   render() {
     const { scale } = this.state;
-
     return (
       React.createElement("div", {
         className: "auto-scaling-text",
         style: { transform: `scale(${scale},${scale})` },
         ref: node => this.node = node },
-      this.props.children));
-
+      this.props.children)
+	);
   }}
-
 
 class CalculatorDisplay extends React.Component {
   render() {
@@ -44,11 +39,9 @@ class CalculatorDisplay extends React.Component {
     const language = navigator.language || 'en-US';
     let formattedValue = parseFloat(value).toLocaleString(language, {
       useGrouping: true,
-      maximumFractionDigits: 6 });
-
-    // Add back missing .0 in e.g. 12.0
+      maximumFractionDigits: 6 
+	});
     const match = value.match(/\.\d*?(0*)$/);
-
     if (match) {
     	formattedValue += /[1-9]/.test(match[0]) ? match[1] : match[0];
 	}
@@ -59,17 +52,14 @@ class CalculatorDisplay extends React.Component {
   }
 }
 
-
 class CalculatorKey extends React.Component {
   render() {
     const { onPress, className, ...props } = this.props;
-
     return (
 		React.createElement(PointTarget, { onPoint: onPress },
     		React.createElement("button", _extends({ className: `calculator-key ${className}` }, props))
 		)
 	);
-
   }
 }
 
@@ -89,39 +79,35 @@ class Calculator extends React.Component {constructor(...args) {
       displayValue: '0',
       operator: null,
       waitingForOperand: false });_defineProperty(this, "handleKeyDown",
-
-    event => {
-      let { key } = event;
-
-      if (key === 'Enter') {
-        key = '=';
-	  }
-
-      if (/\d/.test(key)) {
-        event.preventDefault();
-        this.inputDigit(parseInt(key, 10));
-      } else if (key in CalculatorOperations) {
-        event.preventDefault();
-        this.performOperation(key);
-      } else if (key === '.') {
-        event.preventDefault();
-        this.inputDot();
-      } else if (key === '%') {
-        event.preventDefault();
-        this.inputPercent();
-      } else if (key === 'Backspace') {
-        event.preventDefault();
-        this.clearLastChar();
-      } else if (key === 'Clear') {
-        event.preventDefault();
-
-        if (this.state.displayValue !== '0') {
-          this.clearDisplay();
-        } else {
-          this.clearAll();
-        }
-      }
-     }
+		event => {
+			let { key } = event;
+			if (key === 'Enter') {
+				key = '=';
+			}
+			if (/\d/.test(key)) {
+				event.preventDefault();
+				this.inputDigit(parseInt(key, 10));
+			} else if (key in CalculatorOperations) {
+				event.preventDefault();
+				this.performOperation(key);
+			} else if (key === '.') {
+				event.preventDefault();
+				this.inputDot();
+			} else if (key === '%') {
+				event.preventDefault();
+				this.inputPercent();
+			} else if (key === 'Backspace') {
+				event.preventDefault();
+				this.clearLastChar();
+			} else if (key === 'Clear') {
+				event.preventDefault();
+				if (this.state.displayValue !== '0') {
+					this.clearDisplay();
+				} else {
+					this.clearAll();
+				}
+			}
+		}
 	);
 	}
 	clearAll() {
@@ -180,7 +166,6 @@ class Calculator extends React.Component {constructor(...args) {
 
   render() {
     const { displayValue } = this.state;
-
     const clearDisplay = displayValue !== '0';
     const clearText = clearDisplay ? 'C' : 'AC';
     return (
